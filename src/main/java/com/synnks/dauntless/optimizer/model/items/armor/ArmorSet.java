@@ -1,13 +1,12 @@
 package com.synnks.dauntless.optimizer.model.items.armor;
 
+import com.synnks.dauntless.optimizer.model.perks.Perk;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Set;
-import java.util.TreeSet;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.synnks.dauntless.optimizer.model.items.armor.Arms.*;
@@ -39,33 +38,41 @@ public enum ArmorSet {
     BOREUS(BOREAL_EPIPHANY, BOREAL_RESOLVE, BOREAL_MIGHT, BOREAL_MARCH);
 
     @Getter
-    private final Head head;
+    private final Head<? extends Perk> head;
     @Getter
-    private final Torso torso;
+    private final Torso<? extends Perk> torso;
     @Getter
-    private final Arms arms;
+    private final Arms<? extends Perk> arms;
     @Getter
-    private final Legs legs;
+    private final Legs<? extends Perk> legs;
 
-    public static Set<Head> getAllHeads() {
-        return get(ArmorSet::getHead);
-    }
-
-    public static Set<Torso> getAllTorsos() {
-        return get(ArmorSet::getTorso);
-    }
-
-    public static Set<Arms> getAllArms() {
-        return get(ArmorSet::getArms);
-    }
-
-    public static Set<Legs> getAllLegs() {
-        return get(ArmorSet::getLegs);
-    }
-
-    private static <Type extends Armor<Type>> Set<Type> get(Function<ArmorSet, Type> mapper) {
+    public static Set<Head<? extends Perk>> getAllHeads() {
         return Arrays.stream(values())
-                .map(mapper)
+                .map(ArmorSet::getHead)
+                .map(Armor::getAllFlavours)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toUnmodifiableSet());
+    }
+
+    public static Set<Torso<? extends Perk>> getAllTorsos() {
+        return Arrays.stream(values())
+                .map(ArmorSet::getTorso)
+                .map(Armor::getAllFlavours)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toUnmodifiableSet());
+    }
+
+    public static Set<Arms<? extends Perk>> getAllArms() {
+        return Arrays.stream(values())
+                .map(ArmorSet::getArms)
+                .map(Armor::getAllFlavours)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toUnmodifiableSet());
+    }
+
+    public static Set<Legs<? extends Perk>> getAllLegs() {
+        return Arrays.stream(values())
+                .map(ArmorSet::getLegs)
                 .map(Armor::getAllFlavours)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toUnmodifiableSet());

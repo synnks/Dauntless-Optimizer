@@ -1,55 +1,71 @@
 package com.synnks.dauntless.optimizer.model.items.armor;
 
 import com.synnks.dauntless.optimizer.model.Element;
+import com.synnks.dauntless.optimizer.model.items.Equipment;
+import com.synnks.dauntless.optimizer.model.items.Socket;
 import com.synnks.dauntless.optimizer.model.perks.Perk;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
-import java.util.Arrays;
+import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-public abstract class Armor<Type extends Armor<Type>> implements Comparable<Armor> {
+public abstract class Armor<P extends Enum & Perk, Type extends Armor<P, Type>> implements Equipment<Type>, Comparable<Armor<?, ?>> {
 
     @Getter
     private final String name;
     @Getter(AccessLevel.PACKAGE)
-    private final Perk existingPerk;
+    private final Perk perk;
     @Getter(AccessLevel.PACKAGE)
-    private final Perk socket;
+    private final Socket<P> socket;
     @Getter(AccessLevel.PACKAGE)
-    private final Class<? extends Perk> socketType;
     private final Element weakness;
+    @Getter(AccessLevel.PACKAGE)
     private final Element resistance;
 
-    public Optional<Element> getResistance() {
-        return Optional.ofNullable(resistance);
+    public Armor(String name, Perk perk, Class<P> socketType, Element weakness, Element resistance) {
+        this.name = name;
+        this.perk = perk;
+        this.socket = Socket.of(socketType);
+        this.weakness = weakness;
+        this.resistance = resistance;
     }
 
-    public Optional<Element> getWeakness() {
-        return Optional.ofNullable(weakness);
+    protected Armor(String name, Perk perk, Socket<P> socket, Element weakness, Element resistance) {
+        this.name = name;
+        this.perk = perk;
+        this.socket = socket;
+        this.weakness = weakness;
+        this.resistance = resistance;
     }
 
     @Override
-    public int compareTo(Armor o) {
-        int result = getName().compareTo(o.getName());
+    public Map<Perk, Integer> getAllPerks() {
+        return Stream.of(getPerk(), getSocket().getPerk().orElse(null))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toMap(Function.identity(), perk -> 1, Integer::sum));
+    }
+
+    @Override
+    public int compareTo(Armor<?, ?> o) {
+        var result = getName().compareTo(o.getName());
         if (result == 0) {
-            result = getExistingPerk().compare(o.getExistingPerk());
+            result = getPerk().compare(o.getPerk());
         }
         if (result == 0) {
-            result = getSocket() != null && o.getSocket() != null ? getSocket().compare(o.getSocket()) : 0;
+            result = getSocket().compareTo(o.getSocket());
         }
         return result;
     }
 
-    abstract Type socket(Perk socket);
+    public abstract Type socket(P perk);
 
     public Set<Type> getAllFlavours() {
-        return Arrays.stream(getSocketType().getEnumConstants())
+        return getSocket().getAllPerks().stream()
                 .map(this::socket)
                 .collect(Collectors.toUnmodifiableSet());
     }
@@ -58,23 +74,23 @@ public abstract class Armor<Type extends Armor<Type>> implements Comparable<Armo
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Armor<?> armor = (Armor<?>) o;
+        final var armor = (Armor<?, ?>) o;
         return Objects.equals(name, armor.name) &&
-                Objects.equals(existingPerk, armor.existingPerk) &&
+                Objects.equals(perk, armor.perk) &&
                 Objects.equals(socket, armor.socket);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, existingPerk, socket);
+        return Objects.hash(name, perk, socket);
     }
 
     @Override
     public String toString() {
         return "Armor{" +
                 "name='" + name + '\'' +
-                ", existingPerk=" + existingPerk +
-                (socket != null ? ", socket=" + socket : "") +
+                ", perk=" + perk +
+                ", socket=" + socket +
                 ", weakness=" + weakness +
                 ", resistance=" + resistance +
                 '}';
