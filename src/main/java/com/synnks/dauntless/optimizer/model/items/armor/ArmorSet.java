@@ -1,5 +1,6 @@
 package com.synnks.dauntless.optimizer.model.items.armor;
 
+import com.synnks.dauntless.optimizer.model.items.Equipment;
 import com.synnks.dauntless.optimizer.model.perks.Perk;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -49,15 +50,19 @@ public enum ArmorSet {
     public static Set<Head<? extends Perk>> getAllHeads() {
         return Arrays.stream(values())
                 .map(ArmorSet::getHead)
-                .map(Armor::getAllFlavours)
+                .map(Equipment::getAllFlavours)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toUnmodifiableSet());
+    }
+
+    public static Set<Head<? extends Perk>> getExoticHeads() {
+        return Set.of(PRISMATIC_GRACE, TRAGIC_ECHO, THE_SKULLFORGE);
     }
 
     public static Set<Torso<? extends Perk>> getAllTorsos() {
         return Arrays.stream(values())
                 .map(ArmorSet::getTorso)
-                .map(Armor::getAllFlavours)
+                .map(Equipment::getAllFlavours)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toUnmodifiableSet());
     }
@@ -65,7 +70,7 @@ public enum ArmorSet {
     public static Set<Arms<? extends Perk>> getAllArms() {
         return Arrays.stream(values())
                 .map(ArmorSet::getArms)
-                .map(Armor::getAllFlavours)
+                .map(Equipment::getAllFlavours)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toUnmodifiableSet());
     }
@@ -73,7 +78,7 @@ public enum ArmorSet {
     public static Set<Legs<? extends Perk>> getAllLegs() {
         return Arrays.stream(values())
                 .map(ArmorSet::getLegs)
-                .map(Armor::getAllFlavours)
+                .map(Equipment::getAllFlavours)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toUnmodifiableSet());
     }
