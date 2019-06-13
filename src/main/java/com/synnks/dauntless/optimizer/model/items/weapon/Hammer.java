@@ -11,7 +11,7 @@ import static com.synnks.dauntless.optimizer.model.perks.Power.*;
 import static com.synnks.dauntless.optimizer.model.perks.Technique.*;
 import static com.synnks.dauntless.optimizer.model.perks.Utility.AETHERIC_ATTUNEMENT;
 
-public final class Hammer<P1 extends Enum & Perk, P2 extends Enum & Perk> extends Weapon<P1, P2, Hammer<P1, P2>> {
+public final class Hammer<P1 extends Perk, P2 extends Perk> extends Weapon<P1, P2> {
 
     public static final Hammer<Power, Utility> RAGING_CRASH = new Hammer<>("Raging Crash", RAGEHUNTER, null, Power.class, Utility.class, null);
     public static final Hammer<Power, Mobility> FALL_OF_THE_SHRIKE = new Hammer<>("Fall of the Shrike", CONDITIONING, UniqueEffect.SHRIKE, Power.class, Mobility.class, null);
@@ -44,7 +44,7 @@ public final class Hammer<P1 extends Enum & Perk, P2 extends Enum & Perk> extend
     }
 
     @Override
-    public Hammer<P1, P2> socket(P1 perk1, P2 perk2) {
+    protected Hammer<P1, P2> socket(P1 perk1, P2 perk2) {
         return new Hammer<>(getName(), getPerk(), getUniqueEffect(), getSocket1().socket(perk1), getSocket2().socket(perk2), getElement());
     }
 }

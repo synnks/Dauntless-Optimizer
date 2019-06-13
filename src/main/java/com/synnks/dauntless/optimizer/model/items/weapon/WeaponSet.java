@@ -1,14 +1,13 @@
 package com.synnks.dauntless.optimizer.model.items.weapon;
 
-import com.synnks.dauntless.optimizer.model.items.Equipment;
 import com.synnks.dauntless.optimizer.model.perks.Perk;
-import com.synnks.dauntless.optimizer.model.perks.Power;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -41,65 +40,72 @@ public enum WeaponSet {
     VALOMYR(VALOMYRS_DECREE, VALOMYRS_REVENGE, VALOMYRS_BURDEN, VALOMYRS_REGARD, VALOMYRS_HOPE),
     BOREUS(TURMOIL_OF_BOREUS, DESTINY_OF_BOREUS, BRUTALITY_OF_BOREUS, ONUS_OF_BOREUS, REVOLUTION_OF_BOREUS);
 
-    @Getter
+    @Getter(AccessLevel.PRIVATE)
     private final Axe<? extends Perk, ? extends Perk> axe;
-    @Getter
+    @Getter(AccessLevel.PRIVATE)
     private final ChainBlades<? extends Perk, ? extends Perk> chainBlades;
-    @Getter
+    @Getter(AccessLevel.PRIVATE)
     private final Hammer<? extends Perk, ? extends Perk> hammer;
-    @Getter
+    @Getter(AccessLevel.PRIVATE)
     private final Sword<? extends Perk, ? extends Perk> sword;
-    @Getter
+    @Getter(AccessLevel.PRIVATE)
     private final WarPike<? extends Perk, ? extends Perk> warPike;
 
-    public static Set<Axe<? extends Perk, ? extends Perk>> getAllAxes() {
+    public static Collection<? extends Weapon> getAllWeapons() {
+        return Arrays.stream(values())
+                .map(weaponSet -> Stream.of(
+                        weaponSet.getAxe(),
+                        weaponSet.getChainBlades(),
+                        weaponSet.getHammer(),
+                        weaponSet.getSword(),
+                        weaponSet.getWarPike()))
+                .flatMap(Function.identity())
+                .map(Weapon::getAllFlavours)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toUnmodifiableSet());
+    }
+
+    public static Collection<? extends Weapon> getAllAxes() {
         return Arrays.stream(values())
                 .map(WeaponSet::getAxe)
-                .map(Equipment::getAllFlavours)
+                .map(Weapon::getAllFlavours)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toUnmodifiableSet());
     }
 
-    public static Set<ChainBlades<? extends Perk, ? extends Perk>> getAllChainBlades() {
+    public static Collection<? extends Weapon> getAllChainBlades() {
         return Arrays.stream(values())
                 .map(WeaponSet::getChainBlades)
-                .map(Equipment::getAllFlavours)
+                .map(Weapon::getAllFlavours)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toUnmodifiableSet());
     }
 
-    public static Set<Hammer<? extends Perk, ? extends Perk>> getAllHammers() {
-        return Arrays.stream(values())
-                .map(WeaponSet::getHammer)
-                .map(Equipment::getAllFlavours)
+    public static Collection<? extends Weapon> getAllHammers() {
+        return Stream.concat(Stream.of(MOLTEN_EDICT), Arrays.stream(values()).map(WeaponSet::getHammer))
+                .map(Weapon::getAllFlavours)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toUnmodifiableSet());
     }
 
-    public static Set<Sword<? extends Perk, ? extends Perk>> getAllSwords() {
-        return Arrays.stream(values())
-                .map(WeaponSet::getSword)
-                .map(Equipment::getAllFlavours)
+    public static Collection<? extends Weapon> getAllSwords() {
+        return Stream.concat(Stream.of(THE_HUNGER), Arrays.stream(values()).map(WeaponSet::getSword))
+                .map(Weapon::getAllFlavours)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toUnmodifiableSet());
     }
 
-    public static Set<WarPike<? extends Perk, ? extends Perk>> getAllWarPikes() {
-        return Arrays.stream(values())
-                .map(WeaponSet::getWarPike)
-                .map(Equipment::getAllFlavours)
+    public static Collection<? extends Weapon> getAllWarPikes() {
+        return Stream.concat(Stream.of(THE_GODHAND), Arrays.stream(values()).map(WeaponSet::getWarPike))
+                .map(Weapon::getAllFlavours)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toUnmodifiableSet());
     }
 
-    public static Set<Repeaters<? extends Perk, ? extends Perk>> getAllRepeaters() {
+    public static Collection<? extends Weapon> getAllRepeaters() {
         return Stream.of(Repeaters.GENERIC_REPEATERS)
-                .map(Equipment::getAllFlavours)
+                .map(Weapon::getAllFlavours)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toUnmodifiableSet());
-    }
-
-    public static Set<Weapon<? extends Perk, ? extends Perk, ? extends Weapon>> getExoticWeapons() {
-        return Set.of(THE_HUNGER, THE_GODHAND, MOLTEN_EDICT);
     }
 }

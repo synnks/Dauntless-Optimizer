@@ -1,6 +1,7 @@
 package com.synnks.dauntless.optimizer.model.perks;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -14,7 +15,7 @@ public interface Perk {
         return toString();
     }
 
-    static <P extends Enum & Perk> Set<P> getAllPerks(Class<P> perkType) {
-        return Arrays.stream(perkType.getEnumConstants()).collect(Collectors.toUnmodifiableSet());
+    static <P extends Perk> Set<P> getAllPerks(Class<P> perkType) {
+        return Arrays.stream(perkType.getEnumConstants()).filter(Objects::nonNull).collect(Collectors.toUnmodifiableSet());
     }
 }

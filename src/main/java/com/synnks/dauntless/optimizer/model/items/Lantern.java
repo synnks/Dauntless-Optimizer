@@ -5,12 +5,11 @@ import com.synnks.dauntless.optimizer.model.perks.Utility;
 import lombok.AccessLevel;
 import lombok.Getter;
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public class Lantern implements Equipment<Lantern> {
+public class Lantern implements Equipment {
 
     public static final Lantern DRASKS_EYE = new Lantern("Drask's Eye");
     public static final Lantern EMBERMANES_RAPTURE = new Lantern("Embermane's Rapture");
@@ -39,8 +38,7 @@ public class Lantern implements Equipment<Lantern> {
         return getSocket().getPerk().map(perk -> Map.<Perk, Integer>of(perk, 1)).orElse(Collections.emptyMap());
     }
 
-    @Override
-    public Set<Lantern> getAllFlavours() {
+    private Set<Lantern> getAllFlavours() {
         return getSocket().getAllPerks().stream()
                 .map(this::socket)
                 .collect(Collectors.toUnmodifiableSet());
@@ -50,7 +48,32 @@ public class Lantern implements Equipment<Lantern> {
         return new Lantern(getName(), getSocket().socket(perk));
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        final Lantern lantern = (Lantern) o;
+        return Objects.equals(name, lantern.name) &&
+                Objects.equals(socket, lantern.socket);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, socket);
+    }
+
+    @Override
+    public String toString() {
+        return "Lantern{" +
+                "name='" + name + '\'' +
+                ", socket=" + socket +
+                '}';
+    }
+
     public static Set<Lantern> getAllLanterns() {
-        return Set.of(DRASKS_EYE, EMBERMANES_RAPTURE, PANGARS_SHINE, SHRIKES_ZEAL, SKARNS_DEFIANCE, KOSHAIS_BLOOM);
+        return Stream.of(DRASKS_EYE, EMBERMANES_RAPTURE, PANGARS_SHINE, SHRIKES_ZEAL, SKARNS_DEFIANCE, KOSHAIS_BLOOM)
+                .map(Lantern::getAllFlavours)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toUnmodifiableSet());
     }
 }

@@ -14,7 +14,7 @@ import static com.synnks.dauntless.optimizer.model.perks.Technique.PREDATOR;
 import static com.synnks.dauntless.optimizer.model.perks.Utility.AETHERIC_FRENZY;
 import static com.synnks.dauntless.optimizer.model.perks.Utility.CONDUIT;
 
-public final class Legs<P extends Enum & Perk> extends Armor<P, Legs<P>> {
+public final class Legs<P extends Perk> extends Armor<P, Legs<P>> {
 
     public static final Legs<Power> GNASHER_TREADS = new Legs<>("Gnasher Treads", TOUGH, Power.class, null, null);
     public static final Legs<Mobility> SHRIKEDOWN_GREAVES = new Legs<>("Shrikedown Greaves", BLOODLESS, Mobility.class, null, null);
@@ -36,7 +36,7 @@ public final class Legs<P extends Enum & Perk> extends Armor<P, Legs<P>> {
     public static final Legs<Utility> GREAVES_OF_VALOUR = new Legs<>("Greaves of Valour", AETHERHUNTER, Utility.class, RADIANT, UMBRAL);
     public static final Legs<Technique> BOREAL_MARCH = new Legs<>("Boreal March", ICEBORNE, Technique.class, FROST, BLAZE);
 
-    public Legs(String name, Perk existingPerk, Class<P> socketType, Element resistance, Element weakness) {
+    private Legs(String name, Perk existingPerk, Class<P> socketType, Element resistance, Element weakness) {
         super(name, existingPerk, socketType, resistance, weakness);
     }
 
@@ -45,7 +45,7 @@ public final class Legs<P extends Enum & Perk> extends Armor<P, Legs<P>> {
     }
 
     @Override
-    public Legs<P> socket(P perk) {
+    protected Legs<P> socket(P perk) {
         return new Legs<>(getName(), getPerk(), getSocket().socket(perk), getResistance(), getWeakness());
     }
 }

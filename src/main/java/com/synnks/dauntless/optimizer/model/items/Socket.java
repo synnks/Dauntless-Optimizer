@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-public abstract class Socket<P extends Enum & Perk> implements Comparable<Socket<? extends Perk>> {
+public abstract class Socket<P extends Perk> implements Comparable<Socket<? extends Perk>> {
 
     private final Class<P> socketType;
 
@@ -14,7 +14,7 @@ public abstract class Socket<P extends Enum & Perk> implements Comparable<Socket
         this.socketType = socketType;
     }
 
-    public static <P extends Enum & Perk> Socket<P> of(Class<P> socketType) {
+    public static <P extends Perk> Socket<P> of(Class<P> socketType) {
         return new EmptySocket<>(socketType);
     }
 
@@ -63,7 +63,7 @@ public abstract class Socket<P extends Enum & Perk> implements Comparable<Socket
         return Objects.hash(socketType);
     }
 
-    private static final class EmptySocket<P extends Enum & Perk> extends Socket<P> {
+    private static final class EmptySocket<P extends Perk> extends Socket<P> {
 
         private EmptySocket(Class<P> socketType) {
             super(socketType);
@@ -73,9 +73,14 @@ public abstract class Socket<P extends Enum & Perk> implements Comparable<Socket
         public Optional<P> getPerk() {
             return Optional.empty();
         }
+
+        @Override
+        public String toString() {
+            return "EmptySocket{}";
+        }
     }
 
-    private static final class FullSocket<P extends Enum & Perk> extends Socket<P> {
+    private static final class FullSocket<P extends Perk> extends Socket<P> {
 
         private final P perk;
 
@@ -101,6 +106,13 @@ public abstract class Socket<P extends Enum & Perk> implements Comparable<Socket
         @Override
         public int hashCode() {
             return Objects.hash(super.hashCode(), perk);
+        }
+
+        @Override
+        public String toString() {
+            return "FullSocket{" +
+                    "perk=" + perk +
+                    '}';
         }
     }
 }

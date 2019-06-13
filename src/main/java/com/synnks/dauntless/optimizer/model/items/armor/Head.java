@@ -13,7 +13,7 @@ import static com.synnks.dauntless.optimizer.model.perks.Technique.EVASIVE_FURY;
 import static com.synnks.dauntless.optimizer.model.perks.Technique.SAVAGERY;
 import static com.synnks.dauntless.optimizer.model.perks.Utility.*;
 
-public final class Head<P extends Enum & Perk> extends Armor<P, Head<P>> {
+public final class Head<P extends Perk> extends Armor<P, Head<P>> {
 
     public static final Head<Defense> GNASHER_CAP = new Head<>("Gnasher Cap", BLOODLESS, Defense.class, null, null);
     public static final Head<Technique> SHRIKEDOWN_HELM = new Head<>("Shrikedown Helm", EVASION, Technique.class, null, null);
@@ -35,11 +35,11 @@ public final class Head<P extends Enum & Perk> extends Armor<P, Head<P>> {
     public static final Head<Power> CREST_OF_VALOUR = new Head<>("Crest of Valour", LUCENT, Power.class, RADIANT, UMBRAL);
     public static final Head<Utility> BOREAL_EPIPHANY = new Head<>("Boreal Epiphany", CONDITIONING, Utility.class, FROST, BLAZE);
 
-    public static final Head<Technique> PRISMATIC_GRACE = new Head<>("Prismatic Grace", UniqueEffect.PRISMATIC_GRACE, Technique.class, RADIANT, UMBRAL);
-    public static final Head<Power> TRAGIC_ECHO = new Head<>("Tragic Echo", UniqueEffect.TRAGIC_ECHO, Power.class, UMBRAL, RADIANT);
-    public static final Head<Defense> THE_SKULLFORGE = new Head<>("The Skullforge", UniqueEffect.THE_SKULLFORGE, Defense.class, BLAZE, FROST);
+    public static final Head<Technique> PRISMATIC_GRACE = new Head<>("Prismatic Grace", null, Technique.class, RADIANT, UMBRAL);
+    public static final Head<Power> TRAGIC_ECHO = new Head<>("Tragic Echo", null, Power.class, UMBRAL, RADIANT);
+    public static final Head<Defense> THE_SKULLFORGE = new Head<>("The Skullforge", null, Defense.class, BLAZE, FROST);
 
-    public Head(String name, Perk perk, Class<P> socketType, Element weakness, Element resistance) {
+    private Head(String name, Perk perk, Class<P> socketType, Element weakness, Element resistance) {
         super(name, perk, socketType, weakness, resistance);
     }
 
@@ -48,7 +48,7 @@ public final class Head<P extends Enum & Perk> extends Armor<P, Head<P>> {
     }
 
     @Override
-    public Head<P> socket(P perk) {
+    protected Head<P> socket(P perk) {
         return new Head<>(getName(), getPerk(), getSocket().socket(perk), getResistance(), getWeakness());
     }
 }

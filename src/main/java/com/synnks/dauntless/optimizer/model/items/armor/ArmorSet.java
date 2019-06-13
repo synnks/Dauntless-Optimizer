@@ -1,14 +1,14 @@
 package com.synnks.dauntless.optimizer.model.items.armor;
 
-import com.synnks.dauntless.optimizer.model.items.Equipment;
 import com.synnks.dauntless.optimizer.model.perks.Perk;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.synnks.dauntless.optimizer.model.items.armor.Arms.*;
 import static com.synnks.dauntless.optimizer.model.items.armor.Head.*;
@@ -38,47 +38,47 @@ public enum ArmorSet {
     VALOMYR(CREST_OF_VALOUR, AEGIS_OF_VALOUR, GAUNTLETS_OF_VALOUR, GREAVES_OF_VALOUR),
     BOREUS(BOREAL_EPIPHANY, BOREAL_RESOLVE, BOREAL_MIGHT, BOREAL_MARCH);
 
-    @Getter
+    @Getter(AccessLevel.PRIVATE)
     private final Head<? extends Perk> head;
-    @Getter
+    @Getter(AccessLevel.PRIVATE)
     private final Torso<? extends Perk> torso;
-    @Getter
+    @Getter(AccessLevel.PRIVATE)
     private final Arms<? extends Perk> arms;
-    @Getter
+    @Getter(AccessLevel.PRIVATE)
     private final Legs<? extends Perk> legs;
 
-    public static Set<Head<? extends Perk>> getAllHeads() {
-        return Arrays.stream(values())
-                .map(ArmorSet::getHead)
-                .map(Equipment::getAllFlavours)
-                .flatMap(Collection::stream)
+    public static Collection<Head> getAllHeads() {
+        return Stream.concat(
+                Stream.of(PRISMATIC_GRACE, TRAGIC_ECHO, THE_SKULLFORGE)
+                        .map(Armor::getAllFlavours)
+                        .flatMap(Collection::stream),
+                Arrays.stream(values())
+                        .map(ArmorSet::getHead)
+                        .map(Armor::getAllFlavours)
+                        .flatMap(Collection::stream))
                 .collect(Collectors.toUnmodifiableSet());
     }
 
-    public static Set<Head<? extends Perk>> getExoticHeads() {
-        return Set.of(PRISMATIC_GRACE, TRAGIC_ECHO, THE_SKULLFORGE);
-    }
-
-    public static Set<Torso<? extends Perk>> getAllTorsos() {
+    public static Collection<Torso> getAllTorsos() {
         return Arrays.stream(values())
                 .map(ArmorSet::getTorso)
-                .map(Equipment::getAllFlavours)
+                .map(Armor::getAllFlavours)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toUnmodifiableSet());
     }
 
-    public static Set<Arms<? extends Perk>> getAllArms() {
+    public static Collection<Arms> getAllArms() {
         return Arrays.stream(values())
                 .map(ArmorSet::getArms)
-                .map(Equipment::getAllFlavours)
+                .map(Armor::getAllFlavours)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toUnmodifiableSet());
     }
 
-    public static Set<Legs<? extends Perk>> getAllLegs() {
+    public static Collection<Legs> getAllLegs() {
         return Arrays.stream(values())
                 .map(ArmorSet::getLegs)
-                .map(Equipment::getAllFlavours)
+                .map(Armor::getAllFlavours)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toUnmodifiableSet());
     }

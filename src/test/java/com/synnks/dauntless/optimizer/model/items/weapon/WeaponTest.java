@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 
 public class WeaponTest {
 
-    private static final class MockWeapon extends Weapon<PerkTest.MockPerk, PerkTest.MockPerk, MockWeapon> {
+    private static final class MockWeapon extends Weapon<PerkTest.MockPerk, PerkTest.MockPerk> {
 
         private MockWeapon(String name, Perk perk, Element element) {
             super(name, perk, null, PerkTest.MockPerk.class, PerkTest.MockPerk.class, element);
@@ -26,7 +26,7 @@ public class WeaponTest {
         }
 
         @Override
-        public MockWeapon socket(PerkTest.MockPerk perk1, PerkTest.MockPerk perk2) {
+        protected MockWeapon socket(PerkTest.MockPerk perk1, PerkTest.MockPerk perk2) {
             return new MockWeapon(getName(), getPerk(), getSocket1().socket(perk1), getSocket2().socket(perk2), getElement());
         }
     }
@@ -111,8 +111,8 @@ public class WeaponTest {
         var string = new MockWeapon("Test Weapon", PerkTest.MockPerk.perk1, null).toString();
 
         assertThat(string.contains("name='Test Weapon'"), is(true));
-        assertThat(string.contains("perk=" + PerkTest.MockPerk.perk1.toString()), is(true));
-        assertThat(string.contains("element=null"), is(true));
+        assertThat(string.contains("socket1=EmptySocket{}"), is(true));
+        assertThat(string.contains("socket2=EmptySocket{}"), is(true));
     }
 
 }

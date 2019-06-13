@@ -11,7 +11,7 @@ import static com.synnks.dauntless.optimizer.model.perks.Power.*;
 import static com.synnks.dauntless.optimizer.model.perks.Technique.*;
 import static com.synnks.dauntless.optimizer.model.perks.Utility.*;
 
-public final class Arms<P extends Enum & Perk> extends Armor<P, Arms<P>> {
+public final class Arms<P extends Perk> extends Armor<P, Arms<P>> {
 
     public static final Arms<Power> GNASHER_GRIPS = new Arms<>("Gnasher Grips", RAGEHUNTER, Power.class, null, null);
     public static final Arms<Mobility> SHRIKEDOWN_GLOVES = new Arms<>("Shrikedown Gloves", WEIGHTED_STRIKES, Mobility.class, null, null);
@@ -33,7 +33,7 @@ public final class Arms<P extends Enum & Perk> extends Armor<P, Arms<P>> {
     public static final Arms<Defense> GAUNTLETS_OF_VALOUR = new Arms<>("Gauntlets of Valour", LUCENT, Defense.class, RADIANT, UMBRAL);
     public static final Arms<Power> BOREAL_MIGHT = new Arms<>("Boreal Might", RAGE, Power.class, FROST, BLAZE);
 
-    public Arms(String name, Perk existingPerk, Class<P> socketType, Element resistance, Element weakness) {
+    private Arms(String name, Perk existingPerk, Class<P> socketType, Element resistance, Element weakness) {
         super(name, existingPerk, socketType, resistance, weakness);
     }
 
@@ -42,7 +42,7 @@ public final class Arms<P extends Enum & Perk> extends Armor<P, Arms<P>> {
     }
 
     @Override
-    public Arms<P> socket(P perk) {
+    protected Arms<P> socket(P perk) {
         return new Arms<>(getName(), getPerk(), getSocket().socket(perk), getResistance(), getWeakness());
     }
 }

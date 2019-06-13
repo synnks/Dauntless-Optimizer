@@ -12,7 +12,7 @@ import static com.synnks.dauntless.optimizer.model.perks.Technique.*;
 import static com.synnks.dauntless.optimizer.model.perks.Utility.AETHERIC_ATTUNEMENT;
 import static com.synnks.dauntless.optimizer.model.perks.Utility.ENERGIZED;
 
-public final class Axe<P1 extends Enum & Perk, P2 extends Enum & Perk> extends Weapon<P1, P2, Axe<P1, P2>> {
+public final class Axe<P1 extends Perk, P2 extends Perk> extends Weapon<P1, P2> {
 
     public static final Axe<Power, Utility> RAGING_BITE = new Axe<>("Raging Bite", RAGEHUNTER, null, Power.class, Utility.class, null);
     public static final Axe<Power, Mobility> SONG_OF_THE_SHRIKE = new Axe<>("Song of the Shrike", CONDITIONING, UniqueEffect.SHRIKE, Power.class, Mobility.class, null);
@@ -43,7 +43,7 @@ public final class Axe<P1 extends Enum & Perk, P2 extends Enum & Perk> extends W
     }
 
     @Override
-    public Axe<P1, P2> socket(P1 perk1, P2 perk2) {
+    protected Axe<P1, P2> socket(P1 perk1, P2 perk2) {
         return new Axe<>(getName(), getPerk(), getUniqueEffect(), getSocket1().socket(perk1), getSocket2().socket(perk2), getElement());
     }
 }

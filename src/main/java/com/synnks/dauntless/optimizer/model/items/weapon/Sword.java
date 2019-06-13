@@ -5,13 +5,14 @@ import com.synnks.dauntless.optimizer.model.items.Socket;
 import com.synnks.dauntless.optimizer.model.perks.*;
 
 import static com.synnks.dauntless.optimizer.model.Element.*;
-import static com.synnks.dauntless.optimizer.model.perks.Mobility.*;
+import static com.synnks.dauntless.optimizer.model.perks.Mobility.CONDITIONING;
+import static com.synnks.dauntless.optimizer.model.perks.Mobility.NIMBLE;
 import static com.synnks.dauntless.optimizer.model.perks.Power.*;
 import static com.synnks.dauntless.optimizer.model.perks.Technique.*;
 import static com.synnks.dauntless.optimizer.model.perks.Utility.AETHERIC_ATTUNEMENT;
 import static com.synnks.dauntless.optimizer.model.perks.Utility.ENERGIZED;
 
-public final class Sword<P1 extends Enum & Perk, P2 extends Enum & Perk> extends Weapon<P1, P2, Sword<P1, P2>> {
+public final class Sword<P1 extends Perk, P2 extends Perk> extends Weapon<P1, P2> {
 
     public static final Sword<Utility, Defense> RAGING_BLADE = new Sword<>("Raging Blade", RAGEHUNTER, null, Utility.class, Defense.class, null);
     public static final Sword<Mobility, Mobility> CRY_OF_THE_SHRIKE = new Sword<>("Cry of the Shrike", CONDITIONING, UniqueEffect.SHRIKE, Mobility.class, Mobility.class, null);
@@ -44,7 +45,7 @@ public final class Sword<P1 extends Enum & Perk, P2 extends Enum & Perk> extends
     }
 
     @Override
-    public Sword<P1, P2> socket(P1 perk1, P2 perk2) {
+    protected Sword<P1, P2> socket(P1 perk1, P2 perk2) {
         return new Sword<>(getName(), getPerk(), getUniqueEffect(), getSocket1().socket(perk1), getSocket2().socket(perk2), getElement());
     }
 }

@@ -108,8 +108,6 @@ public class ArmorTest {
         var string = new MockArmor("Test Armor", PerkTest.MockPerk.perk1, null, null).toString();
 
         assertThat(string.contains("name='Test Armor'"), is(true));
-        assertThat(string.contains("perk=" + PerkTest.MockPerk.perk1.toString()), is(true));
-        assertThat(string.contains("weakness=null"), is(true));
-        assertThat(string.contains("resistance=null"), is(true));
+        assertThat(string.contains("socket=EmptySocket{}"), is(true));
     }
 }

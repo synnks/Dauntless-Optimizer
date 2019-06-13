@@ -14,7 +14,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public abstract class Armor<P extends Enum & Perk, Type extends Armor<P, Type>> implements Equipment<Type>, Comparable<Armor<?, ?>> {
+public abstract class Armor<P extends Perk, Type extends Armor<P, Type>> implements Equipment, Comparable<Armor<?, ?>> {
 
     @Getter
     private final String name;
@@ -27,7 +27,7 @@ public abstract class Armor<P extends Enum & Perk, Type extends Armor<P, Type>> 
     @Getter(AccessLevel.PACKAGE)
     private final Element resistance;
 
-    public Armor(String name, Perk perk, Class<P> socketType, Element weakness, Element resistance) {
+    protected Armor(String name, Perk perk, Class<P> socketType, Element weakness, Element resistance) {
         this.name = name;
         this.perk = perk;
         this.socket = Socket.of(socketType);
@@ -62,7 +62,7 @@ public abstract class Armor<P extends Enum & Perk, Type extends Armor<P, Type>> 
         return result;
     }
 
-    public abstract Type socket(P perk);
+    protected abstract Type socket(P perk);
 
     public Set<Type> getAllFlavours() {
         return getSocket().getAllPerks().stream()
@@ -87,12 +87,9 @@ public abstract class Armor<P extends Enum & Perk, Type extends Armor<P, Type>> 
 
     @Override
     public String toString() {
-        return "Armor{" +
+        return getClass().getSimpleName() + "{" +
                 "name='" + name + '\'' +
-                ", perk=" + perk +
                 ", socket=" + socket +
-                ", weakness=" + weakness +
-                ", resistance=" + resistance +
                 '}';
     }
 }

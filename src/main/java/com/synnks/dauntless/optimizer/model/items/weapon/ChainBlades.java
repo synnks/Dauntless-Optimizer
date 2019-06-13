@@ -12,7 +12,7 @@ import static com.synnks.dauntless.optimizer.model.perks.Technique.*;
 import static com.synnks.dauntless.optimizer.model.perks.Utility.AETHERIC_ATTUNEMENT;
 import static com.synnks.dauntless.optimizer.model.perks.Utility.ENERGIZED;
 
-public final class ChainBlades<P1 extends Enum & Perk, P2 extends Enum & Perk> extends Weapon<P1, P2, ChainBlades<P1, P2>> {
+public final class ChainBlades<P1 extends Perk, P2 extends Perk> extends Weapon<P1, P2> {
 
     public static final ChainBlades<Technique, Utility> RAGING_TEETH = new ChainBlades<>("Raging Teeth", RAGEHUNTER, null, Technique.class, Utility.class, null);
     public static final ChainBlades<Technique, Mobility> FLIGHT_OF_THE_SHRIKE = new ChainBlades<>("Flight of the Shrike", CONDITIONING, UniqueEffect.SHRIKE, Technique.class, Mobility.class, null);
@@ -43,7 +43,7 @@ public final class ChainBlades<P1 extends Enum & Perk, P2 extends Enum & Perk> e
     }
 
     @Override
-    public ChainBlades<P1, P2> socket(P1 perk1, P2 perk2) {
+    protected ChainBlades<P1, P2> socket(P1 perk1, P2 perk2) {
         return new ChainBlades<>(getName(), getPerk(), getUniqueEffect(), getSocket1().socket(perk1), getSocket2().socket(perk2), getElement());
     }
 }

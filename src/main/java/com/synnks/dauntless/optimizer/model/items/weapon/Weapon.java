@@ -13,7 +13,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public abstract class Weapon<P1 extends Enum & Perk, P2 extends Enum & Perk, Type extends Weapon<P1, P2, Type>> implements Equipment<Type>, Comparable<Weapon<?, ?, ?>> {
+public abstract class Weapon<P1 extends Perk, P2 extends Perk> implements Equipment, Comparable<Weapon<?, ?>> {
 
     @Getter
     private final String name;
@@ -48,13 +48,13 @@ public abstract class Weapon<P1 extends Enum & Perk, P2 extends Enum & Perk, Typ
 
     @Override
     public Map<Perk, Integer> getAllPerks() {
-        return Stream.of(getPerk(), getUniqueEffect(), getSocket1().getPerk().orElse(null), getSocket2().getPerk().orElse(null))
+        return Stream.of(getPerk(), getSocket1().getPerk().orElse(null), getSocket2().getPerk().orElse(null))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toMap(Function.identity(), perk -> 1, Integer::sum));
     }
 
     @Override
-    public int compareTo(Weapon<?, ?, ?> o) {
+    public int compareTo(Weapon<?, ?> o) {
         var result = getName().compareTo(o.getName());
         if (result == 0) {
             result = getPerk().compare(o.getPerk());
@@ -68,11 +68,10 @@ public abstract class Weapon<P1 extends Enum & Perk, P2 extends Enum & Perk, Typ
         return result;
     }
 
-    public abstract Type socket(P1 perk1, P2 perk2);
+    protected abstract Weapon<P1, P2> socket(P1 perk1, P2 perk2);
 
-    @Override
-    public Set<Type> getAllFlavours() {
-        final var flavours = new HashSet<Type>();
+    public Set<Weapon> getAllFlavours() {
+        final var flavours = new HashSet<Weapon<P1, P2>>();
         for (var p1 : getSocket1().getAllPerks()) {
             for (var p2 : getSocket2().getAllPerks()) {
                 flavours.add(socket(p1, p2));
@@ -85,7 +84,7 @@ public abstract class Weapon<P1 extends Enum & Perk, P2 extends Enum & Perk, Typ
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        final var weapon = (Weapon<?, ?, ?>) o;
+        final var weapon = (Weapon<?, ?>) o;
         return Objects.equals(name, weapon.name) &&
                 Objects.equals(perk, weapon.perk) &&
                 Objects.equals(socket1, weapon.socket1) &&
@@ -99,13 +98,10 @@ public abstract class Weapon<P1 extends Enum & Perk, P2 extends Enum & Perk, Typ
 
     @Override
     public String toString() {
-        return "Weapon{" +
+        return getClass().getSimpleName() + "{" +
                 "name='" + name + '\'' +
-                ", perk=" + perk +
-                ", uniqueEffect=" + uniqueEffect +
                 ", socket1=" + socket1 +
                 ", socket2=" + socket2 +
-                ", element=" + element +
                 '}';
     }
 }

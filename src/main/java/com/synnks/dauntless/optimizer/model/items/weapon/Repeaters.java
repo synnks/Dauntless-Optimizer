@@ -7,7 +7,7 @@ import com.synnks.dauntless.optimizer.model.perks.Perk;
 import com.synnks.dauntless.optimizer.model.perks.Technique;
 import com.synnks.dauntless.optimizer.model.perks.UniqueEffect;
 
-public final class Repeaters<P1 extends Enum & Perk, P2 extends Enum & Perk> extends Weapon<P1, P2, Repeaters<P1, P2>> {
+public final class Repeaters<P1 extends Perk, P2 extends Perk> extends Weapon<P1, P2> {
 
     public static final Repeaters<Technique, Mobility> GENERIC_REPEATERS = new Repeaters<>("Generic Repeaters", null, null, Technique.class, Mobility.class, null);
 
@@ -20,7 +20,7 @@ public final class Repeaters<P1 extends Enum & Perk, P2 extends Enum & Perk> ext
     }
 
     @Override
-    public Repeaters<P1, P2> socket(P1 perk1, P2 perk2) {
+    protected Repeaters<P1, P2> socket(P1 perk1, P2 perk2) {
         return new Repeaters<>(getName(), getPerk(), getUniqueEffect(), getSocket1().socket(perk1), getSocket2().socket(perk2), getElement());
     }
 }

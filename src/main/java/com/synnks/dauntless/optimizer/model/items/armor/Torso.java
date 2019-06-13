@@ -12,7 +12,7 @@ import static com.synnks.dauntless.optimizer.model.perks.Power.RAGE;
 import static com.synnks.dauntless.optimizer.model.perks.Technique.*;
 import static com.synnks.dauntless.optimizer.model.perks.Utility.*;
 
-public final class Torso<P extends Enum & Perk> extends Armor<P, Torso<P>> {
+public final class Torso<P extends Perk> extends Armor<P, Torso<P>> {
 
     public static final Torso<Defense> GNASHER_CLOAK = new Torso<>("Gnasher Cloak", TOUGH, Defense.class, null, null);
     public static final Torso<Mobility> SHRIKEDOWN_PLATE = new Torso<>("Shrikedown Plate", EVASION, Mobility.class, null, null);
@@ -38,12 +38,12 @@ public final class Torso<P extends Enum & Perk> extends Armor<P, Torso<P>> {
         super(name, existingPerk, socketType, resistance, weakness);
     }
 
-    public Torso(String name, Perk existingPerk, Socket<P> socket, Element resistance, Element weakness) {
+    private Torso(String name, Perk existingPerk, Socket<P> socket, Element resistance, Element weakness) {
         super(name, existingPerk, socket, resistance, weakness);
     }
 
     @Override
-    public Torso<P> socket(P perk) {
+    protected Torso<P> socket(P perk) {
         return new Torso<>(getName(), getPerk(), getSocket().socket(perk), getResistance(), getWeakness());
     }
 }
