@@ -7,8 +7,7 @@ import com.synnks.dauntless.optimizer.model.perks.*;
 import static com.synnks.dauntless.optimizer.model.Element.*;
 import static com.synnks.dauntless.optimizer.model.perks.Defense.*;
 import static com.synnks.dauntless.optimizer.model.perks.Mobility.*;
-import static com.synnks.dauntless.optimizer.model.perks.Power.KNOCKOUT_KING;
-import static com.synnks.dauntless.optimizer.model.perks.Power.RAGE;
+import static com.synnks.dauntless.optimizer.model.perks.Power.*;
 import static com.synnks.dauntless.optimizer.model.perks.Technique.EVASIVE_FURY;
 import static com.synnks.dauntless.optimizer.model.perks.Technique.SAVAGERY;
 import static com.synnks.dauntless.optimizer.model.perks.Utility.*;
@@ -25,7 +24,7 @@ public final class Head<P extends Perk> extends Armor<P, Head<P>> {
     public static final Head<Power> DRASKSCALE_HELMET = new Head<>("Draskscale Helmet", AETHERIC_ATTUNEMENT, Power.class, SHOCK, TERRA);
     public static final Head<Utility> SHOCKING_GAZE = new Head<>("Shocking Gaze", MEDIC, Utility.class, SHOCK, TERRA);
     public static final Head<Power> BROW_OF_ICE = new Head<>("Brow of Ice", KNOCKOUT_KING, Power.class, FROST, BLAZE);
-    public static final Head<Technique> HELLPLATE_CASQUE = new Head<>("Hellplate Casque", KNOCKOUT_KING, Technique.class, FROST, BLAZE);
+    public static final Head<Technique> HELLPLATE_CASQUE = new Head<>("Hellplate Casque", RAGEHUNTER, Technique.class, FROST, BLAZE);
     public static final Head<Technique> LIGHTNING_HELM = new Head<>("Lightning Helm", ENERGIZED, Technique.class, SHOCK, TERRA);
     public static final Head<Mobility> EYE_OF_THE_SWARM = new Head<>("Eye of the Swarm", SHELLSHOCK_RESIST, Mobility.class, TERRA, SHOCK);
     public static final Head<Technique> LIGHTS_CROWN = new Head<>("Light's Crown", CONDUIT, Technique.class, RADIANT, UMBRAL);

@@ -38,7 +38,7 @@ public class Lantern implements Equipment {
         return getSocket().getPerk().map(perk -> Map.<Perk, Integer>of(perk, 1)).orElse(Collections.emptyMap());
     }
 
-    private Set<Lantern> getAllFlavours() {
+    public Set<Lantern> getAllFlavours() {
         return getSocket().getAllPerks().stream()
                 .map(this::socket)
                 .collect(Collectors.toUnmodifiableSet());

@@ -22,9 +22,9 @@ public abstract class Armor<P extends Perk, Type extends Armor<P, Type>> impleme
     private final Perk perk;
     @Getter(AccessLevel.PACKAGE)
     private final Socket<P> socket;
-    @Getter(AccessLevel.PACKAGE)
+    @Getter
     private final Element weakness;
-    @Getter(AccessLevel.PACKAGE)
+    @Getter
     private final Element resistance;
 
     protected Armor(String name, Perk perk, Class<P> socketType, Element weakness, Element resistance) {

@@ -6,9 +6,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public interface WeaponFilter {
-
-    Supplier<Collection<? extends Weapon>> getSupplier();
+public interface WeaponFilter extends EquipmentFilter<Weapon> {
 
     class WeaponClass implements WeaponFilter {
 
@@ -51,6 +49,14 @@ public interface WeaponFilter {
         @Override
         public Supplier<Collection<? extends Weapon>> getSupplier() {
             return weapon::getAllFlavours;
+        }
+    }
+
+    class AllWeapons implements WeaponFilter {
+
+        @Override
+        public Supplier<Collection<? extends Weapon>> getSupplier() {
+            return WeaponSet::getAllWeapons;
         }
     }
 }
